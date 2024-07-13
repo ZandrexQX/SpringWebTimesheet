@@ -3,6 +3,8 @@ package ru.gb.timesheet;
 public class REST {
 
   /**
+   * REST - Representation Stateful Transfer
+   *
    * HTTP - протокол
    * gRPC - протокол
    * WebSockets - протокол

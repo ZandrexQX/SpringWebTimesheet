@@ -4,6 +4,10 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
+/**
+ * Описание структуры json-ответа на REST-запросы.
+ * Т.е. запросы, ответ на которые - JSON.
+ */
 @Data
 public class Timesheet {
 
@@ -11,11 +15,5 @@ public class Timesheet {
   private Long projectId;
   private int minutes;
   private LocalDate createdAt;
-
-  public Timesheet(Long id, Project project) {
-    this.id = id;
-    this.projectId = project.getId();
-    this.createdAt = LocalDate.now();
-  }
 
 }

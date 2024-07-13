@@ -22,12 +22,12 @@ public class ProjectController {
 
     @GetMapping
     public ResponseEntity<List<Project>> getAll() {
-        return ResponseEntity.ok(service.getAll());
+        return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Project> get(@PathVariable Long id) {
-        Optional<Project> ps = service.getById(id);
+        Optional<Project> ps = service.findById(id);
 
         if (ps.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(ps.get());

@@ -7,31 +7,41 @@ import ru.gb.timesheet.repository.ProjectRepository;
 import ru.gb.timesheet.repository.TimesheetRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-@Service // то же самое, что и Component
+@Service
 public class ProjectService {
 
-    private final ProjectRepository repository;
+  private final ProjectRepository projectRepository;
+  private final TimesheetRepository timesheetRepository;
 
-    public ProjectService(ProjectRepository repository) {
-        this.repository = repository;
+  public ProjectService(ProjectRepository projectRepository, TimesheetRepository timesheetRepository) {
+    this.projectRepository = projectRepository;
+    this.timesheetRepository = timesheetRepository;
+  }
+
+  public Optional<Project> findById(Long id) {
+    return projectRepository.findById(id);
+  }
+
+  public List<Project> findAll() {
+    return projectRepository.findAll();
+  }
+
+  public Project create(Project project) {
+    return projectRepository.create(project);
+  }
+
+  public void delete(Long id) {
+    projectRepository.delete(id);
+  }
+
+  public List<Timesheet> getTimesheets(Long id) {
+    if (projectRepository.findById(id).isEmpty()) {
+      throw new NoSuchElementException("Project with id = " + id + " does not exists");
     }
 
-    public Optional<Project> getById(Long id) {
-        return repository.getById(id);
-    }
-
-    public List<Project> getAll() {
-        return repository.getAll();
-    }
-
-    public Project create(Project project) {
-        return repository.create(project);
-    }
-
-    public void delete(Long id) {
-        repository.delete(id);
-    }
-
+    return timesheetRepository.findByProjectId(id);
+  }
 }
