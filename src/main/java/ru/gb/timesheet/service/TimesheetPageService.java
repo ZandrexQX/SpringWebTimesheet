@@ -2,9 +2,9 @@ package ru.gb.timesheet.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.gb.timesheet.page.TimesheetPageDto;
 import ru.gb.timesheet.model.Project;
 import ru.gb.timesheet.model.Timesheet;
+import ru.gb.timesheet.page.TimesheetPageDto;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -35,9 +35,9 @@ public class TimesheetPageService {
     TimesheetPageDto timesheetPageParameters = new TimesheetPageDto();
     timesheetPageParameters.setProjectName(project.getName());
     timesheetPageParameters.setId(String.valueOf(timesheet.getId()));
-    // 150 -> 2h30m
     timesheetPageParameters.setMinutes(String.valueOf(timesheet.getMinutes()));
     timesheetPageParameters.setCreatedAt(timesheet.getCreatedAt().format(DateTimeFormatter.ISO_DATE));
+    timesheetPageParameters.setProjectId(String.valueOf(timesheet.getProjectId()));
 
     return timesheetPageParameters;
   }
