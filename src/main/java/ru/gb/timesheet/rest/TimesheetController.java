@@ -1,5 +1,8 @@
 package ru.gb.timesheet.rest;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +15,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/timesheets")
+@Tag(name = "Затраты времени", description = "API для затрат времени")
 public class TimesheetController {
 
   // GET - получить - не содержит тела
@@ -30,17 +34,15 @@ public class TimesheetController {
     this.service = service;
   }
 
+  @Operation(summary = "Получить затрату времени", description = "Получить затрату времени по ID")
   @GetMapping("/{id}") // получить все
-  public ResponseEntity<Timesheet> get(@PathVariable Long id) {
+  public ResponseEntity<Timesheet> get(@PathVariable @Parameter(description = "ID затраты времени") Long id) {
     return service.findById(id)
       .map(ResponseEntity::ok)
       .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  // /timesheets
-  // /timesheets?createdAtBefore=2024-07-09
-  // /timesheets?createdAtAfter=2024-07-15
-  // /timesheets?createdAtAfter=2024-07-15&createdAtBefore=2024-06-05
+  @Operation(summary = "Получить список затрат времени", description = "Получить список затрат времени")
   @GetMapping
   public ResponseEntity<List<Timesheet>> getAll(
     @RequestParam(required = false) LocalDate createdAtBefore,
@@ -53,19 +55,19 @@ public class TimesheetController {
   //                          -> exceptionHandler(e)
   // client <- [spring-server <- ...
 
+  @Operation(summary = "Создать затрату времени", description = "Создать новую затрату времени")
+  @ResponseStatus(HttpStatus.CREATED)
   @PostMapping // создание нового ресурса
-  public ResponseEntity<Timesheet> create(@RequestBody Timesheet timesheet) {
+  public ResponseEntity<Timesheet> create(@RequestBody @Parameter(description = "Новая затрата времени") Timesheet timesheet) {
     final Timesheet created = service.create(timesheet);
-
-    // 201 Created
     return ResponseEntity.status(HttpStatus.CREATED).body(created);
   }
 
+  @Operation(summary = "Удалить затрату времени", description = "Удалить затрату времени по ID")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable Long id) {
+  public ResponseEntity<Void> delete(@PathVariable @Parameter(description = "ID затраты времени") Long id) {
     service.delete(id);
-
-    // 204 No Content
     return ResponseEntity.noContent().build();
   }
 
