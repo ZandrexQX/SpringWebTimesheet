@@ -27,11 +27,11 @@ public class TimesheetService {
   }
 
   public List<Timesheet> findAll() {
-    return findAll(null, null);
+    return timesheetRepository.findAll();
   }
 
   public List<Timesheet> findAll(LocalDate createdAtBefore, LocalDate createdAtAfter) {
-    return timesheetRepository.findAll(createdAtBefore, createdAtAfter);
+    return timesheetRepository.findByCreatedAtBetween(createdAtBefore, createdAtAfter);
   }
 
   public Timesheet create(Timesheet timesheet) {
@@ -44,11 +44,11 @@ public class TimesheetService {
     }
 
     timesheet.setCreatedAt(LocalDate.now());
-    return timesheetRepository.create(timesheet);
+    return timesheetRepository.save(timesheet);
   }
 
   public void delete(Long id) {
-    timesheetRepository.delete(id);
+    timesheetRepository.deleteById(id);
   }
 
 }

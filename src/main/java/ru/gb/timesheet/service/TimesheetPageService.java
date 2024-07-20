@@ -2,6 +2,7 @@ package ru.gb.timesheet.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.gb.timesheet.model.Employee;
 import ru.gb.timesheet.model.Project;
 import ru.gb.timesheet.model.Timesheet;
 import ru.gb.timesheet.page.TimesheetPageDto;
@@ -16,6 +17,7 @@ public class TimesheetPageService {
 
   private final TimesheetService timesheetService;
   private final ProjectService projectService;
+  private final EmployeeService employeeService;
 
   public List<TimesheetPageDto> findAll() {
     return timesheetService.findAll().stream()
@@ -31,9 +33,11 @@ public class TimesheetPageService {
   private TimesheetPageDto convert(Timesheet timesheet) {
     Project project = projectService.findById(timesheet.getProjectId())
       .orElseThrow();
-
+    Employee employee = employeeService.findById(timesheet.getEmployeeId())
+            .orElseThrow();
     TimesheetPageDto timesheetPageParameters = new TimesheetPageDto();
     timesheetPageParameters.setProjectName(project.getName());
+    timesheetPageParameters.setEmployeeName(employee.getName());
     timesheetPageParameters.setId(String.valueOf(timesheet.getId()));
     timesheetPageParameters.setMinutes(String.valueOf(timesheet.getMinutes()));
     timesheetPageParameters.setCreatedAt(timesheet.getCreatedAt().format(DateTimeFormatter.ISO_DATE));

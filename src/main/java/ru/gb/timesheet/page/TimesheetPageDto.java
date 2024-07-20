@@ -10,6 +10,7 @@ import lombok.Data;
 public class TimesheetPageDto {
 
   private String projectName;
+  private String employeeName;
   private String id;
   private String minutes;
   private String createdAt;
