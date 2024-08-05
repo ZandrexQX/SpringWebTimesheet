@@ -6,11 +6,14 @@ import org.springframework.context.ApplicationContext;
 import ru.gb.timesheet.model.Employee;
 import ru.gb.timesheet.model.Project;
 import ru.gb.timesheet.model.Timesheet;
+import ru.gb.timesheet.model.User;
 import ru.gb.timesheet.repository.EmployeeRepository;
 import ru.gb.timesheet.repository.ProjectRepository;
 import ru.gb.timesheet.repository.TimesheetRepository;
+import ru.gb.timesheet.repository.UserRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootApplication
@@ -18,6 +21,17 @@ public class TimesheetApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(TimesheetApplication.class, args);
+
+		UserRepository userRepository = ctx.getBean(UserRepository.class);
+		User admin = new User();
+		admin.setLogin("admin");
+		admin.setPassword("admin");
+
+		User user = new User();
+		user.setLogin("user");
+		user.setPassword("user");
+
+		userRepository.saveAll(List.of(admin, user));
 
 		ProjectRepository projectRepo = ctx.getBean(ProjectRepository.class);
 
